@@ -1,3 +1,4 @@
+Options +FollowSymlinks
 RewriteEngine On
-RewriteRule \.js$ sprocketize-demo.php [QSA]
-RewriteRule \.css$ sprocketize-demo.php [QSA]
+RewriteRule .js$ sprocketize-demo.php [QSA]
+RewriteRule .css$ sprocketize-demo.php [QSA]

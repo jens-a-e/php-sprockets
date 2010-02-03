@@ -235,7 +235,7 @@ class Sprocket
 	 * @return object self
 	 */
 	function setFilePath($filePath) {
-		$this->filePath = str_replace($this->baseUri, '..', $filePath);
+		$this->filePath = $_SERVER['DOCUMENT_ROOT'] . $filePath;
 		$this->fileExt = array_pop(explode('.', $this->filePath));
 		return $this;
 	}
