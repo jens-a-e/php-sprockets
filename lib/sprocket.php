@@ -17,6 +17,7 @@ define('MINIFY_JS', 'jsmin-1.1.1.php');
  * 
  * @author Kjell Bublitz
  * @author Stuart Loxton
+ * @author jens alexander ewald
  */
 class Sprocket
 {	
@@ -26,6 +27,7 @@ class Sprocket
 	 * @param string $file Javascript file to use
 	 * @param array $options Sprocket settings
 	 */
+	function Sprocket($file, $options = array()) {Sprocket::__construct($file, $options);}
 	function __construct($file, $options = array()) {
 		
 		$options = array_merge(array(
