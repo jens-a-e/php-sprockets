@@ -22,6 +22,7 @@ class SprocketCommand {
 	/**
 	 * Command Constructor
 	 */
+	function SprocketCommand(&$sprocket) {return SprocketCommand::__construct(&$sprocket);}
 	function __construct(&$sprocket) {
 		$this->Sprocket = $sprocket;
 	}

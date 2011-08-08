@@ -66,6 +66,7 @@ class JSMin {
 
   // -- Public Instance Methods ------------------------------------------------
 
+  public function JSMin($input) {JSMin::__construct($input);}
   public function __construct($input) {
     $this->input       = str_replace("\r\n", "\n", $input);
     $this->inputLength = strlen($this->input);
