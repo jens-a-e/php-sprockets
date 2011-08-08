@@ -72,7 +72,8 @@ class Sprocket
 		}
 		
 		if (!$this->debugMode && !$this->_fromCache) {
-			file_put_contents($this->filePath.'.cache', $this->_parsedSource);
+			// try at least!
+			@file_put_contents($this->filePath.'.cache', $this->_parsedSource);
 		}
 		
 		if ($this->contentType) {
@@ -98,7 +99,9 @@ class Sprocket
 	 * @return string Sprocketized Source
 	 */
 	function parseFile($file, $context) {		
-		if (!is_file(realpath($this->filePath))) 
+		$context = is_array($context) ? dirname($this->findFile($file,$context)) : $context;
+		
+		if (!is_file(realpath($context.'/'.$file)))
 			$this->fileNotFound();				
 		
 		$source = file_get_contents($context.'/'.$file);
@@ -237,9 +240,32 @@ class Sprocket
 	 * @return object self
 	 */
 	function setFilePath($filePath) {
-		$this->filePath = $_SERVER['DOCUMENT_ROOT'] . $filePath;
+		// find the file in know resources:
+		$this->filePath = $this->findFile($filePath); //$_SERVER['DOCUMENT_ROOT'] . $filePath;
 		$this->fileExt = array_pop(explode('.', $this->filePath));
 		return $this;
+	}
+	
+	
+	/**
+	 * Find a File in the base
+	 *
+	 * @return void
+	 * @author Jens Alexander Ewald
+	 **/
+	function findFile($filePath)
+	{
+		$scriptlocation = FALSE;
+		foreach ($this->baseFolder as $location)
+		{
+			$loc = realpath($location."/".$filePath);
+			if (!is_dir($loc) && is_readable($loc))
+			{
+				$scriptlocation = $loc;
+				break;
+			}
+		}
+		return $scriptlocation;
 	}
 	
 	/**
@@ -272,7 +298,14 @@ class Sprocket
 	 * @return object self
 	 */
 	function setBaseFolder($baseFolder) {
-		$this->baseFolder = $baseFolder;
+		$this->baseFolder = is_array($baseFolder) ? $baseFolder : array($baseFolder);
+		return $this;		
+	}
+	function addBaseFolder($anotherBaseFolder) {
+		if (is_array($baseFolder))
+			$this->baseFolder = array_merge($this->baseFolder,$anotherBaseFolder);
+		else
+			$this->baseFolder = array($this->baseFolder,$anotherBaseFolder);
 		return $this;		
 	}
 	
