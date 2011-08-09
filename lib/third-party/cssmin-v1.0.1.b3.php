@@ -44,7 +44,7 @@ class cssmin
 	 * 										following spaces.
 	 * @return	string			Minified stylesheet definitions
 	 */
-	public static function minify($css, $options = "remove-last-semicolon")
+	function minify($css, $options = "remove-last-semicolon")
 		{
 		$options = ($options == "") ? array() : (is_array($options) ? $options : explode(",", $options));
 		if (in_array("preserve-urls", $options))
@@ -84,7 +84,7 @@ class cssmin
 	 * @param	string		$options		Options for {@link cssmin::minify()}
 	 * @return	array						Structure of the stylesheet definitions as array
 	 */
-	public static function toArray($css, $options = "")
+	function toArray($css, $options = "")
 		{
 		$r = array();
 		$css = cssmin::minify($css, $options);
@@ -120,7 +120,7 @@ class cssmin
 	 * @param	array		$css
 	 * @return	array
 	 */
-	public static function toString(array $array)
+	function toString(array $array)
 		{
 		$r = "";
 		foreach ($array as $item)
