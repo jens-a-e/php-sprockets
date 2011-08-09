@@ -41,7 +41,8 @@ class SprocketCommandRequire extends SprocketCommand
 				$options = get_class_methods($this);
 				foreach ($fileOptions as $option) {
 					$optionMethod = 'option'.ucfirst($option);
-					if(in_array($optionMethod,$options))
+					// only execute methods, that are defined!
+					if(in_array(strtolower($optionMethod),$options))
 						$source = $this->{$optionMethod}($source, $fileContext, $fileName);
 				}
 			}
