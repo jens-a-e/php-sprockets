@@ -38,9 +38,11 @@ class SprocketCommandRequire extends SprocketCommand
 			// apply file options
 			if (!empty($source) && isset($optionArg)) {
 				$fileOptions = array_map('trim', explode(',', $optionArg));
+				$options = get_class_methods($this);
 				foreach ($fileOptions as $option) {
 					$optionMethod = 'option'.ucfirst($option);
-					$source = $this->{$optionMethod}($source, $fileContext, $fileName);
+					if(in_array($optionMethod,$options))
+						$source = $this->{$optionMethod}($source, $fileContext, $fileName);
 				}
 			}
 		} 

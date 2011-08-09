@@ -31,11 +31,12 @@ class Sprocket
 	function __construct($file, $options = array()) {
 		
 		$options = array_merge(array(
-			'baseUri' => '/php-sprockets',
-			'baseFolder' => '/js',
-			'assetFolder' => '..',
-			'debugMode' => false,
-			'autoRender' => false,
+			'baseUri'     => '/php-sprockets',
+			'baseFolder'  => '/js',
+			'rootFolder'  => $_SERVER['DOCUMENT_ROOT'],
+			'assetFolder' => $_SERVER['DOCUMENT_ROOT'],
+			'debugMode'   => false,
+			'autoRender'  => false,
 			'contentType' => 'application/x-javascript',
 		), $options); 
 		
@@ -47,6 +48,7 @@ class Sprocket
 		$this->setDebugMode($debugMode);
 		$this->setContentType($contentType);
 
+		$this->setRootFolder($rootFolder);
 		$this->setFilePath($file);
 				
 		if ($autoRender) $this->render();
@@ -240,12 +242,18 @@ class Sprocket
 	 * @return object self
 	 */
 	function setFilePath($filePath) {
-		// find the file in know resources:
-		$this->filePath = $this->findFile($filePath); //$_SERVER['DOCUMENT_ROOT'] . $filePath;
+		// find the file in known resources:
+		$this->filePath = $this->rootFolder."/".$filePath;
+		//findFile($filePath,dirname($filePath)); //$_SERVER['DOCUMENT_ROOT'] . $filePath;
 		$this->fileExt = array_pop(explode('.', $this->filePath));
 		return $this;
 	}
 	
+	function setRootFolder($folder)
+	{
+		$this->rootFolder = $folder;
+		return $this;
+	}
 	
 	/**
 	 * Find a File in the base
