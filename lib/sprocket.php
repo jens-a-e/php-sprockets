@@ -306,15 +306,25 @@ class Sprocket
 	 * @param string $baseFolder
 	 * @return object self
 	 */
-	function setBaseFolder($baseFolder) {
-		$this->baseFolder = is_array($baseFolder) ? $baseFolder : array($baseFolder);
+	function setBaseFolder($folder) {
+		if (is_array($folder))
+			$this->baseFolder = $folder;
+		else if (is_string($folder))
+			$this->baseFolder = array($this->baseFolder,$folder);
 		return $this;		
 	}
-	function addBaseFolder($anotherBaseFolder) {
-		if (is_array($baseFolder))
-			$this->baseFolder = array_merge($this->baseFolder,$anotherBaseFolder);
-		else
-			$this->baseFolder = array($this->baseFolder,$anotherBaseFolder);
+
+	/**
+	 * Add a folder to the baseFolder
+	 *
+	 * @param string $folder
+	 * @return object self
+	 */
+	function addBaseFolder($folder) {
+		if (is_array($folder))
+			$this->baseFolder[] = $folder;
+		else if (is_string($folder))
+			$this->baseFolder   = array($this->baseFolder,$folder);
 		return $this;		
 	}
 	
