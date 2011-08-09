@@ -62,8 +62,6 @@ class SprocketCommandRequire extends SprocketCommand
 	 */
 	function optionMinify($source, $context = null, $filename = null) 
 	{
-		return $source; // Make php minify for php4 first!
-		
 		if ($this->Sprocket->fileExt == 'css') {
 			if (!class_exists('cssmin')) {
 				require_once(realpath(dirname(__FILE__).'/../third-party/'.MINIFY_CSS));
