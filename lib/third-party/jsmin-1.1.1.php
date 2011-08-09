@@ -46,35 +46,35 @@
  */
 
 class JSMin {
-  const ORD_LF    = 10;
-  const ORD_SPACE = 32;
+  var $ORD_LF    = 10;
+  var $ORD_SPACE = 32;
 
-  protected $a           = '';
-  protected $b           = '';
-  protected $input       = '';
-  protected $inputIndex  = 0;
-  protected $inputLength = 0;
-  protected $lookAhead   = null;
-  protected $output      = '';
+  var $a           = '';
+  var $b           = '';
+  var $input       = '';
+  var $inputIndex  = 0;
+  var $inputLength = 0;
+  var $lookAhead   = null;
+  var $output      = '';
 
-  // -- Public Static Methods --------------------------------------------------
+  // -- Methods --------------------------------------------------
 
-  public static function minify($js) {
+  function minify($js) {
     $jsmin = new JSMin($js);
     return $jsmin->min();
   }
 
-  // -- Public Instance Methods ------------------------------------------------
+  // -- Instance Methods ------------------------------------------------
 
-  public function JSMin($input) {JSMin::__construct($input);}
-  public function __construct($input) {
+  function JSMin($input) {JSMin::__construct($input);}
+  function __construct($input) {
     $this->input       = str_replace("\r\n", "\n", $input);
     $this->inputLength = strlen($this->input);
   }
 
   // -- Protected Instance Methods ---------------------------------------------
 
-  protected function action($d) {
+   function action($d) {
     switch($d) {
       case 1:
         $this->output .= $this->a;
@@ -91,8 +91,11 @@ class JSMin {
               break;
             }
 
-            if (ord($this->a) <= self::ORD_LF) {
-              throw new JSMinException('Unterminated string literal.');
+            if (ord($this->a) <= $this->ORD_LF) {
+							if (version_compare(PHP_VERSION, '5.0.0', '>='))
+              	eval("throw new JSMinException('Unterminated string literal.')");
+							else
+								trigger_error('JSMinException: Unterminated string literal.',E_USER_WARNING);	
             }
 
             if ($this->a === '\\') {
@@ -120,9 +123,11 @@ class JSMin {
             } elseif ($this->a === '\\') {
               $this->output .= $this->a;
               $this->a       = $this->get();
-            } elseif (ord($this->a) <= self::ORD_LF) {
-              throw new JSMinException('Unterminated regular expression '.
-                  'literal.');
+            } elseif (ord($this->a) <= $this->ORD_LF) {
+							if (version_compare(PHP_VERSION, '5.0.0', '>='))
+              	eval("throw new JSMinException('Unterminated string literal.')");
+							else
+								trigger_error('JSMinException: Unterminated regular expression literal.',E_USER_WARNING);	
             }
 
             $this->output .= $this->a;
@@ -133,7 +138,7 @@ class JSMin {
     }
   }
 
-  protected function get() {
+   function get() {
     $c = $this->lookAhead;
     $this->lookAhead = null;
 
@@ -150,18 +155,18 @@ class JSMin {
       return "\n";
     }
 
-    if ($c === null || $c === "\n" || ord($c) >= self::ORD_SPACE) {
+    if ($c === null || $c === "\n" || ord($c) >= $this->ORD_SPACE) {
       return $c;
     }
 
     return ' ';
   }
 
-  protected function isAlphaNum($c) {
+   function isAlphaNum($c) {
     return ord($c) > 126 || $c === '\\' || preg_match('/^[\w\$]$/', $c) === 1;
   }
 
-  protected function min() {
+   function min() {
     $this->a = "\n";
     $this->action(3);
 
@@ -242,7 +247,7 @@ class JSMin {
     return $this->output;
   }
 
-  protected function next() {
+   function next() {
     $c = $this->get();
 
     if ($c === '/') {
@@ -251,7 +256,7 @@ class JSMin {
           for (;;) {
             $c = $this->get();
 
-            if (ord($c) <= self::ORD_LF) {
+            if (ord($c) <= $this->ORD_LF) {
               return $c;
             }
           }
@@ -269,7 +274,10 @@ class JSMin {
                 break;
 
               case null:
-                throw new JSMinException('Unterminated comment.');
+								if (version_compare(PHP_VERSION, '5.0.0', '>='))
+	              	eval("throw new JSMinException('Unterminated string literal.')");
+								else
+									trigger_error('JSMinException: Unterminated comment.',E_USER_WARNING);	
             }
           }
 
@@ -281,12 +289,13 @@ class JSMin {
     return $c;
   }
 
-  protected function peek() {
+   function peek() {
     $this->lookAhead = $this->get();
     return $this->lookAhead;
   }
 }
 
 // -- Exceptions ---------------------------------------------------------------
-class JSMinException extends Exception {}
+if (version_compare(PHP_VERSION, '5.0.0', '>='))
+	eval("class JSMinException extends Exception {}");
 ?>
