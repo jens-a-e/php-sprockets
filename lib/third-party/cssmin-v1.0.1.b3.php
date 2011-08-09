@@ -120,7 +120,7 @@ class cssmin
 	 * @param	array		$css
 	 * @return	array
 	 */
-	function toString(array $array)
+	function toString($array)
 		{
 		$r = "";
 		foreach ($array as $item)
@@ -142,7 +142,7 @@ class cssmin
  * @param	array		$array
  * @return	array
  */
-function cssmin_array_clean(array $array)
+function cssmin_array_clean($array)
 	{
 	$r = array();
 	$c = count($v);
