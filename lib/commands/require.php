@@ -48,9 +48,9 @@ class SprocketCommandRequire extends SprocketCommand
 		} 
 		else if(preg_match('/\<([^\>]+)\>/', $param, $match)) // <param>
 		{
-			$fileName = $this->getFileName($context, $match[1]);
+			$fileName    = $this->getFileName($context, $match[1]);
 			$fileContext = $this->Sprocket->baseFolder;
-			$source = $this->Sprocket->parseFile($fileName, $fileContext);
+			$source      = $this->Sprocket->parseFile($fileName, $fileContext);
 		}
 		
 		return $source;
