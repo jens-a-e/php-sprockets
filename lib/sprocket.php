@@ -231,7 +231,7 @@ class Sprocket
 	 */ 
 	function fileNotFound() {
 		header("HTTP/1.0 404 Not Found"); 
-		header("Content-Tags: text/html"); 
+		header("Content-Type: text/html"); 
 		echo '<!DOCTYPE html><html><head></head><h1>404 - File Not Found</h1></html>';
 		exit;
 	}
