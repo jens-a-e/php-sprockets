@@ -258,22 +258,23 @@ class Sprocket
 	/**
 	 * Find a File in the base
 	 *
-	 * @return void
+	 * @return string
 	 * @author Jens Alexander Ewald
 	 **/
-	function findFile($filePath)
+	function findFile($filePath,$context)
 	{
-		$scriptlocation = FALSE;
-		foreach ($this->baseFolder as $location)
+		$found = FALSE;
+		if (!is_array($context))$context = array($context);
+		foreach ($context as $ctx)
 		{
-			$loc = realpath($location."/".$filePath);
+			$loc = realpath($ctx."/".$filePath);
 			if (!is_dir($loc) && is_readable($loc))
 			{
-				$scriptlocation = $loc;
+				$found = $loc;
 				break;
 			}
 		}
-		return $scriptlocation;
+		return $found;
 	}
 	
 	/**
